@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSOL SEOUL RB Routine Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --base-color: #181934;
+            --accent-color: #33b2b2;
+        }
+        .video-bg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width:120vw;
+        height: 160vh;
+        object-fit: cover; /* 📌 비율 유지하면서 가득 차게 */
+        opacity: 0.3;
+        z-index: -1;
+    }
+    </style>
+</head>
+<!-- <body class="bg-gray-900 text-[var(--accent-color)] flex flex-col items-center space-y-10 p-8"> -->
+<body class="relative bg-[var(--base-color)] text-[var(--accent-color)] flex flex-col items-center space-y-10 p-8"></body>
+
+    <!-- 🎥 Background Video -->
+    <video autoplay loop muted playsinline class="video-bg">
+        <source src="img/bgr.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Overlay -->
+    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+
+    <!-- 📢 Banner -->
+    <div class="relative max-w-4xl w-full flex flex-col items-center text-center p-6">
+        <img src="img/cafe_대지_1.png" alt="배너 이미지" class="w-full max-h-60 object-cover rounded-lg shadow-lg">
+        <h1 class="text-4xl font-bold mt-4">🏃‍♂️ VSOL RC SEOUL RB</h1>
+        <p class="text-lg text-gray-300 mt-2">매주 함께 달리는 특별한 경험을 즐겨보세요!</p>
+    </div>
+
+    <!-- 📅 Google Calendar Event List -->
+    <div class="relative max-w-4xl w-full bg-[var(--base-color)] p-6 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-white mb-6 text-center">📅 모임 일정</h2>
+        <ul id="event-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></ul>
+    </div>
+
+    <!-- 📝 Google Form -->
+    <div class="relative max-w-2xl w-full bg-[var(--base-color)] p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-[var(--accent-color)] mb-6 text-center">📋 참가 신청</h2>
+        
+        <form id="attendance-form" class="space-y-4">
+            <!-- 이름 -->
+            <div>
+                <label class="block font-medium text-gray-300">이름/소속 또는 기수 (ex. 김영진/4기, 홍길동/의적크루)</label>
+                <input type="text" id="name" required 
+                    class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+            </div>
+
+            <!-- 참석 여부 -->
+            <div>
+                <label class="block font-medium text-gray-300">참석 여부 및 희망 페이스</label>
+                <select id="attendance" 
+                    class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+                    <option value="~400">~400</option>
+                    <option value="~430">~430</option>
+                    <option value="~500">~500</option>
+                    <option value="~600">~600</option>
+                    <option value="~700">~700</option>
+                    <option value="걷기">걷기</option>
+                    <option value="현장 참여만 (운동X)">현장 참여만 (운동X)</option>
+                </select>
+            </div>
+
+            <!-- 오늘 특별히 할 수 있는 보직 -->
+            <div>
+                <label class="block font-medium text-gray-300">오늘 특별히 할 수 있는 보직</label>
+                <select id="role" 
+                    class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+                    <option value="페이서">페이서</option>
+                    <option value="짐보관(차량지원)">짐보관(차량지원)</option>
+                    <option value="포토">포토</option>
+                </select>
+            </div>
+
+            <!-- 짐보관 필요 여부 -->
+            <div>
+                <label class="block font-medium text-gray-300">짐보관 필요</label>
+                <select id="luggage" 
+                    class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+                    <option value="O">O</option>
+                    <option value="X">X</option>
+                </select>
+            </div>
+
+            <!-- 뒷풀이 참석 여부 -->
+            <div>
+                <label class="block font-medium text-gray-300">뒷풀이 참석여부</label>
+                <select id="afterparty" 
+                    class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+                    <option value="O">O</option>
+                    <option value="X">X</option>
+                </select>
+            </div>
+
+            <!-- 제출 버튼 -->
+            <button type="submit" 
+                class="w-full bg-[var(--accent-color)] text-white py-2 rounded-lg font-bold hover:bg-[var(--base-color)]">
+                신청하기
+            </button>
+        </form>
+
+        <p id="status-message" class="text-green-600 font-semibold mt-4 hidden">✅ 신청이 완료되었습니다!</p>
+
+        <div class="text-center mt-6">
+            <p class="text-lg text-gray-300">✨ 혹시 처음 오셨다면? <br> 아래 링크를 클릭하여 장문의 설문을 해주시면, 도움이 됩니다! ✨</p>
+            <a href="https://forms.gle/fZx2BcQ4uupftmjD8" target="_blank" 
+               class="inline-block mt-3 bg-[var(--accent-color)] text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-teal-600 transition">
+                📋 필수는 아니에요!! 시간 되실 때 해주세요 :)
+            </a>
+        </div>
+    </div>
+
+    <!-- 리더 4명 섹션 -->
+    <div class="relative max-w-4xl w-full bg-[var(--base-color)] p-6 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-[var(--accent-color)] mb-6 text-center">🏃‍♂️ 우리 리더들</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+            <div class="p-4 bg-gray-700 rounded-lg hover:scale-105 transition">
+                <img src="img/kimyoungjin06.png" alt="김영진" class="w-24 h-24 mx-auto rounded-full shadow-lg object-cover">
+                <p class="mt-2 text-xl font-semibold text-white">김영진</p>
+                <p class="text-gray-300 text-sm">"함께 달리는 순간이 최고!"</p>
+                <a href="https://instagram.com/kimyoungjin06" target="_blank" class="text-blue-400 text-sm">@kimyoungjin06</a>
+            </div>
+
+            <div class="p-4 bg-gray-700 rounded-lg hover:scale-105 transition">
+                <img src="img/newzaeeun2.png" alt="유재은" class="w-24 h-24 mx-auto rounded-full shadow-lg object-cover">
+                <p class="mt-2 text-xl font-semibold text-white">유재은</p>
+                <p class="text-gray-300 text-sm">"때로는 천천히, 풍경을 음미하며"</p>
+                <a href="https://instagram.com/newzaeeun" target="_blank" class="text-blue-400 text-sm">@newzaeeun</a>
+            </div>
+
+            <div class="p-4 bg-gray-700 rounded-lg hover:scale-105 transition">
+                <img src="img/storytelle_r_unner.png" alt="최준석" class="w-24 h-24 mx-auto rounded-full shadow-lg object-cover">
+                <p class="mt-2 text-xl font-semibold text-white">최준석</p>
+                <p class="text-gray-300 text-sm">"즐기며, 즐거웠던, 내일도 즐거울 달리기!"</p>
+                <a href="https://instagram.com/storytelle_r_unner" target="_blank" class="text-blue-400 text-sm">@storytelle_r_unner</a>
+            </div>
+
+            <div class="p-4 bg-gray-700 rounded-lg hover:scale-105 transition">
+                <img src="img/gogo_jahyoung.png" alt="최자형" class="w-24 h-24 mx-auto rounded-full shadow-lg object-cover">
+                <p class="mt-2 text-xl font-semibold text-white">최자형</p>
+                <p class="text-gray-300 text-sm">"어제와 오늘을 함께 달릴 수 있는 문화유산 런!"</p>
+                <a href="https://instagram.com/gogo_jahyoung" target="_blank" class="text-blue-400 text-sm">@gogo_jahyoung</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 📅 Google Calendar API로 일정 불러오기
+        async function fetchCalendarEvents() {
+            const calendarId = "cd1e782daf5288296e784c60ce242d07c9ec2d6c68b2c4827e2b733cd7dae7fd@group.calendar.google.com";
+            const apiKey = "AIzaSyBSmEJk_eQEcAqndlavLug4YWtNj35e4BU";
+            const timeMin = new Date().toISOString();
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&singleEvents=true&orderBy=startTime&timeMin=${timeMin}`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const data = await response.json();
+                const eventList = document.getElementById("event-list");
+                eventList.innerHTML = "";
+
+                if (data.items && data.items.length > 0) {
+                    data.items.slice(0, 4).forEach(event => {
+                        const start = new Date(event.start.dateTime || event.start.date);
+                        const listItem = document.createElement("li");
+                        listItem.className = "p-4 bg-gray-700 border-l-4 border-blue-400 rounded-md shadow-md hover:scale-105 transition text-white";
+                        listItem.innerHTML = `<strong>${event.summary}</strong> <br> 📅 ${start.toLocaleDateString()} ${start.toLocaleTimeString()}`;
+                        eventList.appendChild(listItem);
+                    });
+                } else {
+                    eventList.innerHTML = "<p class='text-gray-400 text-center'>일정이 없습니다.</p>";
+                }
+            } catch (error) {
+                console.error("Error fetching calendar events:", error);
+                document.getElementById("event-list").innerHTML = "<p class='text-red-400 text-center'>일정을 불러올 수 없습니다.</p>";
+            }
+        }
+
+        fetchCalendarEvents();
+
+
+        // 📝 Google Forms로 참석 신청 제출
+        document.getElementById("attendance-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScCrvHj2OVFcVKP24oKDCekH_ZgFuYAMnrodqdedjivkmh33g/formResponse";  // Google Forms API URL
+            const formData = new FormData();
+
+            formData.append("entry.392058225", document.getElementById("name").value);  // "이름" 필드
+            formData.append("entry.610835873", document.getElementById("attendance").value);  // "참석 여부"
+            formData.append("entry.515292938", document.getElementById("role").value);  // "오늘 특별히 할 수 있는 보직"
+            formData.append("entry.2053606332", document.getElementById("luggage").value);  // "짐보관 필요"
+            formData.append("entry.1733669883", document.getElementById("afterparty").value);  // "뒷풀이 참석여부"
+
+            fetch(formURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                document.getElementById("status-message").classList.remove("hidden");
+                document.getElementById("attendance-form").reset();
+            }).catch(error => console.error("Error!", error.message));
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
