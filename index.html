@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VSOL SEOUL RB Routine Form</title>
+    <title>VSOLRC SEOUL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -80,6 +80,7 @@
                 <label class="block font-medium text-gray-300">오늘 특별히 할 수 있는 보직</label>
                 <select id="role" 
                     class="w-full bg-gray-700 text-white border border-gray-500 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+                    <option value="없음">없음</option>
                     <option value="페이서">페이서</option>
                     <option value="짐보관(차량지원)">짐보관(차량지원)</option>
                     <option value="포토">포토</option>
@@ -114,6 +115,14 @@
         </form>
 
         <p id="status-message" class="text-green-600 font-semibold mt-4 hidden">✅ 신청이 완료되었습니다!</p>
+
+        <div class="text-center mt-6">
+            <p class="text-lg text-gray-300">✨ 혹시 처음 오셨다면? <br> 아래 링크를 클릭하여 장문의 설문을 해주시면, 도움이 됩니다! ✨</p>
+            <a href="https://forms.gle/fZx2BcQ4uupftmjD8" target="_blank" 
+               class="inline-block mt-3 bg-[var(--accent-color)] text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-teal-600 transition">
+                📋 필수는 아니에요!! 시간 되실 때 해주세요 :)
+            </a>
+        </div>
     </div>
 
     <!-- 리더 4명 섹션 -->
